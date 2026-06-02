@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #071019;
+  --card: #0f1d2f;
+  --text: #e8f1fb;
+  --muted: #9eb2c6;
+  --brand: #2ac4ff;
+  --brand-2: #36f7bf;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-display), "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(42, 196, 255, 0.14), transparent 38%),
+    radial-gradient(circle at 90% 0%, rgba(54, 247, 191, 0.1), transparent 32%),
+    linear-gradient(160deg, #040a12 0%, #0a1522 52%, #071019 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.glass-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(10px);
+}
+
+.stagger-enter {
+  animation: slide-up 0.4s ease forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@keyframes slide-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typing indicator dots */
+.typing-dot {
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+/* Line clamp for citations */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
