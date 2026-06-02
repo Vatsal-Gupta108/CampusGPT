@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # Optional: Use Postgres instead of SQLite
+  # db:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_USER: user
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: ai_knowledge_db
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile # You'll need to create a Dockerfile for FastAPI
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./chroma_db:/app/chroma_db
+    environment:
+      - DATABASE_URL=sqlite:///./sql_app.db # Change if using Postgres
+      - LLM_PROVIDER=local
+      # - OPENAI_API_KEY=your_key_here
+    # depends_on:
+    #   - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile # You'll need to create a Dockerfile for Next.js
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+    depends_on:
+      - backend
+
+# volumes:
+#   postgres_data:

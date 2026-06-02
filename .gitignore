@@ -1,0 +1,36 @@
+# Virtual environments
+backend/venv/
+backend/env/
+
+# Python caching
+backend/__pycache__/
+*.pyc
+
+# Local Databases & Vector stores
+backend/chroma_db/
+backend/sql_app.db
+*.db
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+backend/.env
+frontend/.env
+frontend/.env.local
+
+# Node modules
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
