@@ -2,7 +2,6 @@ import os
 from typing import Any, Dict, List, Optional
 
 from langchain_chroma import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from app.core.config import settings
 
