@@ -6,16 +6,34 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from app.core.config import settings
 
+from langchain_core.embeddings import Embeddings
+import chromadb.utils.embedding_functions as ef
+
+class ONNXMiniLMEmbeddings(Embeddings):
+    def __init__(self):
+        """
+        Uses Chroma's default ONNX-based all-MiniLM-L6-v2 model.
+        Runs entirely in ONNX Runtime, using ~50MB RAM compared to ~350MB for PyTorch.
+        """
+        self.func = ef.ONNXMiniLM_L6_V2()
+        
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        return self.func(texts)
+        
+    def embed_query(self, text: str) -> List[float]:
+        return self.func([text])[0]
+
 def get_embedding_model():
     """
     Returns the appropriate embedding model based on configuration.
-    Uses HuggingFace (local) by default.
+    Uses ONNX-based MiniLM by default to run inside the 512MB RAM limit.
     """
     if settings.LLM_PROVIDER == "openai" and settings.OPENAI_API_KEY:
         return OpenAIEmbeddings(openai_api_key=settings.OPENAI_API_KEY)
     
-    # Default to local sentence-transformers
-    return HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    # Default to memory-efficient ONNX embeddings
+    return ONNXMiniLMEmbeddings()
+
 
 def get_vector_store():
     """
