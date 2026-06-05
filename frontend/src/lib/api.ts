@@ -56,6 +56,14 @@ export async function signup(email: string, password: string): Promise<AppUser> 
   });
 }
 
+export async function resetPassword(email: string, resetCode: string, newPassword: string): Promise<{ status: string; message: string }> {
+  return apiRequest("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify({ email, reset_code: resetCode, new_password: newPassword }),
+  });
+}
+
+
 export async function login(email: string, password: string): Promise<{ access_token: string; token_type: string }> {
   const formData = new URLSearchParams();
   formData.set("username", email);

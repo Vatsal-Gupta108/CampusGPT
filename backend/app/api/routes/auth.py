@@ -6,7 +6,7 @@ from app.core.security import verify_password, get_password_hash, create_access_
 from app.core.config import settings
 from app.db.database import get_db
 from app.models.user import User
-from app.schemas.user import UserCreate, UserResponse
+from app.schemas.user import UserCreate, UserResponse, ResetPasswordRequest
 from app.schemas.token import Token
 from app.api.deps import get_current_user
 
@@ -76,3 +76,24 @@ def logout():
     The client should delete its stored token immediately.
     """
     return {"status": "success", "message": "Token invalidated client-side. Please clear local session."}
+
+
+@router.post("/reset-password")
+def reset_password(req: ResetPasswordRequest, db: Session = Depends(get_db)):
+    """
+    Reset a user's password using a master reset secret code.
+    """
+    if req.reset_code != settings.RESET_SECRET_KEY:
+        raise HTTPException(status_code=400, detail="Invalid reset code.")
+        
+    if len(req.new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters.")
+        
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User with this email not found.")
+        
+    user.hashed_password = get_password_hash(req.new_password)
+    db.commit()
+    return {"status": "success", "message": "Password updated successfully."}
+

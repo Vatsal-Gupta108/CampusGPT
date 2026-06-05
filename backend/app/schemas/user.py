@@ -15,3 +15,9 @@ class UserResponse(UserBase):
 
     class Config:
         from_attributes = True
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    reset_code: str
+    new_password: str
+

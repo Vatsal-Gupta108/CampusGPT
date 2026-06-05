@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     # CORS Config
     FRONTEND_URL: str = "http://localhost:3000"
 
+    # Reset Code Config
+    RESET_SECRET_KEY: str = "iitm_admin"
+
     class Config:
         env_file = ".env"
 
