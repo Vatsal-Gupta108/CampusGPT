@@ -28,9 +28,8 @@ def signup(user_in: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Password must be at least 8 characters.")
 
     hashed_password = get_password_hash(user_in.password)
-    # If it's the very first user, let's make them an admin for easy setup
-    is_first_user = db.query(User).count() == 0
-    role = "admin" if is_first_user else "user"
+    # Default role for all new signups is "user"
+    role = "user"
     
     db_user = User(
         email=user_in.email,
