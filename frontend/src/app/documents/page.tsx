@@ -5,11 +5,10 @@ import { FileSearch, Trash2, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 
 import { ProtectedShell } from "@/components/protected-shell";
-import { deleteDocument, listDocuments, searchDocuments } from "@/lib/api";
+import { deleteDocument, listDocuments, searchDocuments, API_BASE } from "@/lib/api";
 import { getToken } from "@/lib/auth";
 import type { DocumentItem, DocumentSearchResult } from "@/lib/types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
